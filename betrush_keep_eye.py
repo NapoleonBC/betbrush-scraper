@@ -1,6 +1,4 @@
 import datetime
-from bs4 import BeautifulSoup
-import requests
 from selenium.webdriver.common.by import By
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options 
@@ -9,10 +7,14 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support import expected_conditions as EC
 import time
+import re
 # from openpyxl import Workbook
 
 # https://www.betrush.com/pick,Capalaba_Women_vs_Lions_Women,219834.html
 # url = 'https://www.betrush.com/tipster,1477.html'
+
+prev_indic = []
+prev_data = []
 
 url = input("Enter URL: ")
 current_month = datetime.datetime.now().month
@@ -29,20 +31,51 @@ WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.CSS_SELECTOR,
 name = driver.find_element(By.CSS_SELECTOR, "div.tipstername").text
 print(name)
 trs = driver.find_elements(By.CSS_SELECTOR, 'div#bymonth table tbody tr')
-links = []
-data = []
-data_num = 1
+
 for i in range(1, len(trs), 2):
     tds = trs[i].find_elements(By.TAG_NAME, 'td')
-    date = tds[0].text.split('-')
+    # date = tds[0].text.split('-')
     pick = tds[len(tds) - 1].find_element(By.TAG_NAME, 'a')
-    if(int(date[0]) >= current_month - 3 and int(date[1]) == current_year):
-        driver.execute_script("arguments[0].click();", pick)
-        time.sleep(0.5)
-        anchors = trs[i + 1].find_elements(By.CSS_SELECTOR, "table tbody tr td:first-child a")
-        for anchor in anchors:
-            if("https://www.betrush.com/pick" in anchor.get_attribute('href')):
-                links.append(anchor.get_attribute('href'))
+    # if(int(date[0]) >= current_month - 3 and int(date[1]) == current_year):
+    driver.execute_script("arguments[0].click();", pick)
+    time.sleep(0.5)
+    td_elements = trs[i + 1].find_elements(By.CSS_SELECTOR, "table tbody tr td:first-child")
+    picks = trs[i + 1].find_elements(By.CSS_SELECTOR, "table tbody tr td:last-child span")
+
+    element_cnt_limit = 0
+    new_indic = []
+    new_data = []
+    for td_element in td_elements:
+        html_content = td_element.text
+
+        # Define a regex pattern to match text within double quotes
+        pattern = r'"(.*?)"'
+
+        # Use re.findall to find all matches in the input string
+        matches = re.findall(pattern, html_content)
+
+        # Append the extracted strings
+        new_indic.append(matches)
+        new_data.append(html_content)
+
+        # Send notification
+        if 
+        
+        if element_cnt_limit > 2:
+            break
+
+        element_cnt_limit += 1
+    
+    prev_indic = new_indic
+    prev_data = new_data
+    
+    anchors = trs[i + 1].find_elements(By.CSS_SELECTOR, "table tbody tr td:last-child span")
+    for anchor in anchors:
+        if("https://www.betrush.com/pick" in anchor.get_attribute('href')):
+            links.append(anchor.get_attribute('href'))
+
+    # Only the latest month is needed
+    break
 for link in links:
     driver.get(link)
     WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'span[style="font-size:11px;"]')))
