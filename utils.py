@@ -2,7 +2,7 @@ import requests
 
 def send_email(subject, html_content, email):
     # Mailgun API key and domain
-    API_KEY = '1fd41c5f7052ce262455b4f702a96ef1-f0e50a42-d575de17'
+    API_KEY = ''
     MAILGUN_DOMAIN = 'sandbox0591d3180e704bd385cf8c394f0116f3.mailgun.org'
     
     # Mailgun API endpoint
