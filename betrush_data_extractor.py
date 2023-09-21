@@ -19,7 +19,7 @@ current_month = datetime.datetime.now().month
 current_year = datetime.datetime.now().year
 
 options = Options()
-options.headless = True
+# options.headless = True
 driver = webdriver.Chrome(options=options)
 # driver.set_window_size(1366, 768)
 driver.get(url)
