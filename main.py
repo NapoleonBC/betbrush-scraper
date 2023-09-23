@@ -11,8 +11,9 @@ import re
 import datetime
 from urllib.parse import urlparse
 
-from utils import send_email
+from utils import send_message_gmail
 
+YOUR_GMAIL = "tech.guru.k.p@gmail.com"
 
 if __name__ == '__main__':
 
@@ -92,7 +93,8 @@ if __name__ == '__main__':
 </table>
 </html>
 '''
-                    send_email(subject=name, html_content=html_content, email="tech.guru.k.p@gmail.com")
+                    # send_email(subject=name, html_content=html_content, email="tech.guru.k.p@gmail.com")
+                    send_message_gmail (subject=name, msgHtml=html_content, to=YOUR_GMAIL, sender=YOUR_GMAIL, msgPlain="Betrush.com")
             
             new_indic.append(matches)
         if new_indic:
